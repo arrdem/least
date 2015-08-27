@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [read])
   (:require [clj-http.client :as http]
             [cheshire.core :as json]
-            [clojure.string :refer [join]])
+            [clojure.string :refer [join lower-case]])
   (:import java.security.MessageDigest))
 
 (def ^:dynamic *api* "http://ws.audioscrobbler.com/2.0/")
@@ -32,18 +32,20 @@
 
 (defn ^:private req [method key http-method params]
   (let [params (assoc params
-                 :format "json"
-                 :method method
-                 :api_key key)
+                      :format "json"
+                      :method (lower-case method)
+                      :api_key key)
         secret (:secret params)
         key-fn (:key-fn params remove-stupid-characters)
         params (dissoc params :secret :key-fn)
-        params (assoc params :api_sig (sign params secret))]
-    (-> (http/request {:url *api*
-                       :method http-method
-                       :query-params (when (= :get http-method) params)
-                       :form-params (when (= :post http-method) params)})
-        (:body)
+        ;; params (assoc params :api_sig (sign params secret))
+        ]
+    (-> (http/request
+         {:url          *api*
+          :method       http-method
+          :query-params (when (= :get http-method) params)
+          :form-params  (when (= :post http-method) params)})
+        :body
         (json/decode key-fn))))
 
 (defn read
