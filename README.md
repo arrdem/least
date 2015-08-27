@@ -9,7 +9,7 @@ simple helper functions for the desktop oauth flow.
 Add a dependency for least:
 
 ```clojure
-:dependencies [[me.raynes/least "0.1.3"]]
+[me.arrdem/least "0.1.6"]
 ```
 
 Maps have been pretty printed for readability.

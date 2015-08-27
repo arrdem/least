@@ -1,4 +1,4 @@
-(defproject me.raynes/least "0.1.5"
+(defproject me.arrdem/least "0.1.6"
   :description "A last.fm API client written in Clojure."
   :url "https://github.com/Raynes/least"
   :license {:name "Eclipse Public License"
